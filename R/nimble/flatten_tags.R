@@ -1,5 +1,5 @@
 flatten_tag_data = function(depth_files, dive_endpoints, template_bins, tag_sex,
-                            cee_starts, validation_proportion) {
+                            validation_proportion) {
   
   # initialize flattened structures
   nim_pkg = list(
@@ -32,10 +32,6 @@ flatten_tag_data = function(depth_files, dive_endpoints, template_bins, tag_sex,
     tag_end = endpoint.inds$t_upr[dive.ranges$T3_endpoint]
     tag_end = tag_end[length(tag_end)]
     
-    # determine which CEE's overlap with tag record
-    cees_experienced = which((tag_start <= cee_starts) & (cee_starts <= tag_end))
-    
-    
     #
     # id's of dives to keep from record
     #
@@ -48,14 +44,6 @@ flatten_tag_data = function(depth_files, dive_endpoints, template_bins, tag_sex,
     dive.ids = base::intersect(dive.ids, 
                          which(dive.ranges$end.ind - dive.ranges$start.ind + 1 > 
                                  3))
-    
-    # keep dives that end before an exposure event
-    if(length(cees_experienced) > 0) {
-      exclude_after_time = cee_starts[min(cees_experienced)]
-      dive.ids = base::intersect(dive.ids,
-                           which(endpoint.inds$t_lwr[dive.ranges$T3_endpoint] <= 
-                                   exclude_after_time))
-    }
     
     # keep dives with observations that start and end at the surface
     dive.ids = base::intersect(
