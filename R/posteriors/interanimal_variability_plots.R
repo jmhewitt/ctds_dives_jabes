@@ -1,4 +1,5 @@
-interanimal_variability_plots = function(samples, nburn, nim_pkg, tag_sex) {
+interanimal_variability_plots = function(samples, nburn, nim_pkg, tag_sex,
+                                         validation_statistics) {
 
   # load posterior samples from file passed as argument
   load(samples)

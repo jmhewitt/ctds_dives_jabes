@@ -11,12 +11,6 @@ report_plan = drake_plan(
                     nim_pkg_tgt = 'nim_pkg_0',
                     nburn = nburn)
     )
-  ),
-  
-  interanimal_variability = interanimal_variability_plots(
-    samples = mcmc_samples_nim_pkg_0, nburn = nburn, nim_pkg = nim_pkg_0,
-    tag_sex = tag_sex
   )
   
 )
-

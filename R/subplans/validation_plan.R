@@ -29,6 +29,14 @@ validation_plan = drake_plan(
                           tag_sex = tag_sex),
     transform = map(tag, 
                     .names = !!(paste('validation_statistics', 1:7, sep = '_')))
+  ),
+  
+  interanimal_variability = target(
+    command = interanimal_variability_plots(
+      samples = mcmc_samples_nim_pkg_0, nburn = nburn, nim_pkg = nim_pkg_0,
+      tag_sex = tag_sex,
+      validation_statistics = do.call(c, validation_statistics)),
+    transform = combine(validation_statistics)
   )
   
 )
