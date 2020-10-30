@@ -18,7 +18,7 @@ nimble_plan = drake_plan(
   # reformat dive data for analysis in nimble (full dataset and validaiton set)
   nim_data = target(
     flatten_tag_data(depth_files, dive_endpoints, template_bins, 
-                     tag_sex, cee_starts, validation_proportion),
+                     tag_sex, validation_proportion),
     transform = map(validation_proportion = c(0, .5)),
     seed = 2020
   ),
