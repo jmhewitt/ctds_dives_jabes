@@ -49,6 +49,18 @@ priors_and_inits = function(nim_data, template_bins, sattag_timestep,
       names(res) = c('G1_mean', 'G1_sd', 'G2_mean', 'G2_sd', 'cov_log')
       res
     }))
+
+  
+  gamma_est = function(x) {
+    # Return MLE estimates for gamma params, or moment estimators if MLE fails
+    tryCatch(fitdistr(x, 'gamma')$estimate,
+             error = function(e) { 
+              m <- mean(x)
+              v <- var(x)
+              c(shape = m^2/v, rate = m/v)
+            }
+    )
+  }
   
   # stage duration priors based on gamma marginals
   duration_priors_gamma = do.call(
@@ -57,8 +69,8 @@ priors_and_inits = function(nim_data, template_bins, sattag_timestep,
       inds = durations.est$tag == i
       # estimate dive durations and correlation on log scale
       res = c(
-        fitdistr(durations.est$sub.time.sec[inds], 'gamma')$estimate,
-        fitdistr(durations.est$bottom.time.sec[inds], 'gamma')$estimate,
+        gamma_est(durations.est$sub.time.sec[inds]),
+        gamma_est(durations.est$bottom.time.sec[inds]),
         cor(log(durations.est$sub.time.sec[inds]),
             log(durations.est$bottom.time.sec[inds]))
       )
